@@ -8,24 +8,20 @@
 
   <p>{{description}}</p> 
 
-  <p>Rating: {{rating}}</p> 
-
-  <p>Published in: {{year_published}}</p>
-
   <p>Players: {{min_players}} - {{max_players}}</p>
 
   <p>Play time: {{min_playtime}} - {{max_playtime}}</p>
 
   <p>Complexity: {{complexity}}</p>
 
-  <p>Global ranking: {{rank}}</p>
-
   <p>category: {{category}}</p>
 
   <p>mechanisms: {{mechanism}}</p>
 
-  <form action="/add-game/{{_id}}" method="POST">
-    <button type="submit" class="btn btn-outline-success btn-lg">Add to my collection</button>
+  <p>designer_notes: {{designer_notes}}</p>
+
+  <form action="/edit-proto/{{_id}}" method="GET">
+    <button type="submit" class="btn btn-outline-success btn-lg">EDIT PROTOTIPE</button>
   </form>
   
 

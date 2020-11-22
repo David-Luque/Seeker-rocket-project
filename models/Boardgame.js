@@ -18,8 +18,7 @@ const boardgameSchema = new Schema({
   mechanisms: {type: [String], enum: ['auctioning', 'engine-building', 'drawing', 'set-collection', 'worker-placement', 'hand-managment', 'card-drafting', 'grid-movement']},
   category: {type: [String], enum: ['abstract', 'cooperative', 'thematic', 'strategy', 'card-game', 'deduction', 'party-game', 'dexterity', 'economic', 'wargame']},
   image: {type: String},
-  users_favlist: {type: String}
-  // users_favlist: {type: [Schema.Types.ObjectId]}
+  users_favlist: [{type: Schema.ObjectId}]
 })
 
 const Boardgame = mongoose.model('Boardgame', boardgameSchema)

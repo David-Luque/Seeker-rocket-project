@@ -1,10 +1,8 @@
-const mongoose = require('mongoose');
 
+const mongoose = require('mongoose');
 const Boardgame = require('../models/Boardgame');
 
- 
-
-mongoose
+ mongoose
 .connect(`mongodb+srv://david-la-91:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, { useNewUrlParser: true }, { useUnifiedTopology: true })
 .then(x => {
   console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
@@ -12,6 +10,7 @@ mongoose
 .catch(err => {
   console.error('Error connecting to mongo', err)
 });
+
 
 const games = [
   {
@@ -51,11 +50,16 @@ const games = [
 
 
 
+Boardgame.create(games, (err) => {
 
+  if (err) { throw(err) }
 
+  console.log(`Created ${games.length} games`)
 
+  mongoose.connection.close();
 
+});
 
-  Boardgame.create(games)
-  .then(result=>console.log(result))
-  .catch(err=>console.log(err))
+  // Boardgame.create(games)
+  // .then(result=>console.log(result))
+  // .catch(err=>console.log(err))

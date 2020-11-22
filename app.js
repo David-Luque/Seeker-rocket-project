@@ -31,13 +31,20 @@ const app = express();
 // Middleware Setup
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(require('serve-static')(__dirname + '/../../public'));
 
 
 
 //MIDDLEWARE DE SESSION
-app.use(session({secret: `${process.env.SECRET}`, resave:true, saveUninitialized: true}))
+app.use(session({
+  secret: 'SuperSecret',
+  saveUninitialized: true,
+  resave: false,
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000
+}));
 
 //MIDDLEWARE PARA "SERIALIZAR" AL USUARIO
 passport.serializeUser((user, callback) => {
@@ -91,6 +98,7 @@ app.use(require('node-sass-middleware')({
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+hbs.registerPartials(__dirname + "/views/partials");
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
@@ -107,6 +115,9 @@ const dataRoutes = require('./routes/dataRoutes');
 app.use('/', index);
 app.use('/', userRoutes);
 app.use('/', dataRoutes);
+const User = require('./models/User');
+const Boardgame = require('./models/Boardgame');
+const Prototipe = require('./models/Prototipe');
 
 
 module.exports = app;

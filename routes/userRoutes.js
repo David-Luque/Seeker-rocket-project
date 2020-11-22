@@ -7,7 +7,8 @@ const ensureLogin = require('connect-ensure-login')
 
 const User = require('../models/User')
 const Boardgame = require('../models/Boardgame')
-const Prototipe = require('../models/Prototipe')
+const Prototipe = require('../models/Prototipe');
+// const { routes } = require('../app');
 
 //rute autentication
 
@@ -15,7 +16,8 @@ const Prototipe = require('../models/Prototipe')
 //   res.render('signUp');
 // });
 
-router.post('/sign-up', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
+  console.log(req.body)
   const {username, password} = req.body
 
   if(username === '' || password === '') {
@@ -45,8 +47,8 @@ router.post('/sign-up', (req, res, next) => {
 //   res.render('welcomePage', {errMessage: req.flash('error')})
 // })
 
-router.post('/log-in', passport.authenticate("local", {
-  successRedirect: '/Userpage',
+router.post('/login', passport.authenticate("local", {
+  successRedirect: '/user-homepage',
   failureRedirect: '/',
   failureFlash: true,
   passReqToCallback: true
@@ -58,7 +60,7 @@ router.post('/log-in', passport.authenticate("local", {
 // })
 
 
-router.post('/log-out', (req, res) => {
+router.get('/logout', (req, res) => {
   req.logout()
   res.redirect('/')
 })
@@ -76,52 +78,111 @@ router.get('/user-homepage', checkForAuth, (req, res) => {
   res.render('userHomePage')
 });
 
-router.get('/games-collection', checkForAuth, (req, res) => {
-  res.render('userGamesCollection')
+
+router.get('/all-games', checkForAuth, (req, res) =>{
+  Boardgame.find({})
+  .then(games => {
+    res.render('allGames', {games})
+  })
+})
+
+router.get('/game-info/:id', checkForAuth, (req, res) => {
+  const id = req.params.id
+  Boardgame.findById(id)
+  .then(game => {
+    res.render('gameInfo', game)
+  })
+  .catch()
+  
 });
+
+router.post('/add-game/:id', checkForAuth, (req, res) =>{
+  const id = req.params.id
+  Boardgame.updateOne({_id: id}, {$push: {users_favlist: user._id}})
+  .then(game => {
+    res.redirect(`/game-info/${game}`)
+  })
+})
+
+
+// routes.get('/games-collection', checkForAuth, (req, res) =>{
+
+//   Boardgame.find({users_favlist: {}})
+// })
+
+
 
 router.get('/prototipes-collection', checkForAuth, (req, res) => {
   Prototipe.find({owner: user._id})
-  .then(data=>{
-    res.render('userPrototipesCollection', {protos: data})
+  .then(game => {
+    res.render('protosCollection', {game})
   })
   .catch(err=>{res.send(err)}) 
   
 });
 
-router.get('/game-info/:id', checkForAuth, (req, res) => {
-  res.render('gameInfo')
-});
 
-router.get('/createPrototipe', checkForAuth, (req, res) => {
-  res.render('createPrototipe')
-});
+router.get('/proto-info/:id', checkForAuth, (req, res) => {
+  const id = req.params._id
+  Prototipe.findById(id)
+  .then(game => {
+    res.render('protoInfo', game)
+  })
+  .catch(err=>{res.send(err)}) 
+})
 
-router.get('/edit-game/:id', checkForAuth, (req, res) => {
-  res.render('editGame')
-});
 
-router.post('/editPrototipe', checkForAuth, (req, res) => {
+router.get('/edit-proto/:id', checkForAuth, (req, res) => {
   const id = req.params.id
-  Prototipe.updateOne(id)
-
-  res.render('editPrototipe')
+  Prototipe.findById(id)
+  .then(game => {
+    res.render('editPrototipe', game)
+  })
+  .catch(err=>{res.send(err)})
 });
+
+
+router.post('/edit-proto/:id', checkForAuth, (req, res) => {
+  const id = req.params.id
+  const editedProto = req.body
+  
+  Prototipe.findByIdAndUpdate(id, {...editedProto, owner: user._id})
+  .then(game => {
+    res.redirect(`/proto-info/${_id}`)
+  })
+  .catch(err=>{res.send(err)})
+});
+
+
 
 router.get('/create-prototipe', checkForAuth, (req, res)=>{
   res.render('createPrototipe')
 })
 
 router.post('/create-prototipe', checkForAuth, (req, res)=>{
-  const {artist, songName, quoteContent} = req.body
-  const id = req.user._id
+  const createdProto = req.body
 
-  Prototipe.create({artist, songName, quoteContent, owner: id})
+  Prototipe.create({...createdProto, owner: id})
   .then(()=>{
-    res.redirect('/prototipes-collection') //=> ¿ññevar o renderizar a pagina del juego creado?
+    res.redirect('/prototipes-collection')
   })
   .catch(err=>res.send(err))
 })
+
+
+
+
+
+
+
+
+
+// router.get('/edit-game/:id', checkForAuth, (req, res) => {
+//   res.render('editGame')
+// });
+
+
+
 
 
 //ESTA FORMA DE ASEGURAR AL PROPIETARIO DEL QUOTE ES OBLIGATORIA EN RUTAS DE EDITAR Y ELIMINAR; OPCIONAL SI DEJAR VER O NO A LOS DEMAS LOS DETALLES

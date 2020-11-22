@@ -1,0 +1,14 @@
+
+<a href="/create-prototipe" class="badge badge-primary">Primary</a>
+
+<ul>
+{{#each games}}
+    <li>
+        <a href="/proto-info/{{_id}}">
+            <img src="{{imageUrl}}" alt="{{name}}">
+            <br>
+            <p>{{name}}</p>
+        </a>
+    </li>
+{{/each}}
+</ul>
