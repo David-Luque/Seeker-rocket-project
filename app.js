@@ -10,12 +10,16 @@ const logger       = require('morgan');
 const path         = require('path');
 const passport      = require('passport');
 const LocalStrategy = require('passport-local').Strategy
-const session       = require('express-session')
+const session       = require('express-session')  
 const bcrypt        = require('bcrypt')
 const flash         = require('connect-flash')
 
+const User = require('./models/User');
+const Boardgame = require('./models/Boardgame');
+const Prototipe = require('./models/Prototipe');
+
 mongoose
-  .connect(`mongodb+srv://david-la-91:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, { useNewUrlParser: true }, { useUnifiedTopology: true })
+  .connect(`mongodb+srv://david-la-91:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -39,30 +43,38 @@ app.use(require('serve-static')(__dirname + '/../../public'));
 
 //MIDDLEWARE DE SESSION
 app.use(session({
-  secret: 'SuperSecret',
+  secret: 'somethingSecret',
   saveUninitialized: true,
-  resave: false,
+  resave: true,
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000
 }));
 
-//MIDDLEWARE PARA "SERIALIZAR" AL USUARIO
-passport.serializeUser((user, callback) => {
-  callback(null, user._id)
-})
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
-//MIDDLEWARE PARA "DES-SERIALIZAR" AL USUARIO
-passport.deserializeUser((id, callback)=>{
-  User.findById(id)
-  .then((user)=>{
-    callback(null, user)
-  })
-  .catch(err=>{
-    callback(err)
-  })
-})
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
-//MIDDLEWARE DE SESSION
+
+
+// //MIDDLEWARE PARA "SERIALIZAR" AL USUARIO
+// passport.serializeUser((user, callback) => {
+//   callback(null, user._id)
+// })
+
+// //MIDDLEWARE PARA "DES-SERIALIZAR" AL USUARIO
+// passport.deserializeUser((id, callback)=>{
+//   User.findById(id)
+//   .then( user => callback(null, user))
+//   .catch( err => callback(err)) 
+// })
+
+//MIDDLEWARE DE FLASH
 app.use(flash())
 
 //MIDDLEWARE FOR STRATEGY
@@ -75,7 +87,6 @@ passport.use(new LocalStrategy({passReqToCallback: true}, (req, username, passwo
     if(!bcrypt.compareSync(password, user.password)) {
       return next(null, false, {message: 'Incorrect password'})
     }
-
     return next(null, user)
   })
   .catch(err => next(err))
@@ -115,9 +126,7 @@ const dataRoutes = require('./routes/dataRoutes');
 app.use('/', index);
 app.use('/', userRoutes);
 app.use('/', dataRoutes);
-const User = require('./models/User');
-const Boardgame = require('./models/Boardgame');
-const Prototipe = require('./models/Prototipe');
+
 
 
 module.exports = app;

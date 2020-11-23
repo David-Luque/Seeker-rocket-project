@@ -81,17 +81,17 @@
       
       <button type="submit">signup</button>
       {{#if invalidMessage}}
-        {{invalidMessage}}
+        <div>{{invalidMessage}}</div> 
       {{/if}}
 
       {{#if succesMessage}}
-        {{succesMessage}}
+        <div>{{succesMessage}}</div>
       {{/if}}
 
       {{#if alreadyMessage}}
-        {{alreadyMessage}}
+        <div>{{alreadyMessage}}</div>
       {{/if}}
-  </form> 
+  </form>
   <hr>
   <form action="/login" method="POST">
       <label for="username">Email:</label>

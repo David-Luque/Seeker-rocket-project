@@ -24,9 +24,19 @@
 
   <p>mechanisms: {{mechanism}}</p>
 
-  <form action="/add-game/{{_id}}" method="POST">
+  <form action="/add-game/{{_id}}" method="GET">
     <button type="submit" class="btn btn-outline-success btn-lg">Add to my collection</button>
   </form>
-  
 
+    <form action="/comment-game/{{_id}}" method="POST">
+    <textarea name="comments" id="comments" cols="30" rows="10" placeholder="whrite a comment here"></textarea>
+    <button type="submit" class="btn btn-outline-warning btn-lg">WRITE COMMENT</button>
+  </form>
+  
+  <a href="/remove-boardgame/{{_id}}">REMOVE FROM MY COLLECTION</a>
+
+  <p>Comments:
+    {{#each comments}}
+      {{comments}}</p>
+    {{/each}}
 </div>

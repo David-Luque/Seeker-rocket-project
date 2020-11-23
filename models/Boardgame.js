@@ -1,6 +1,5 @@
-const express = require('express');
-const mongoose = require('mongoose');
 
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const boardgameSchema = new Schema({
@@ -18,7 +17,7 @@ const boardgameSchema = new Schema({
   mechanisms: {type: [String], enum: ['auctioning', 'engine-building', 'drawing', 'set-collection', 'worker-placement', 'hand-managment', 'card-drafting', 'grid-movement']},
   category: {type: [String], enum: ['abstract', 'cooperative', 'thematic', 'strategy', 'card-game', 'deduction', 'party-game', 'dexterity', 'economic', 'wargame']},
   image: {type: String},
-  users_favlist: [{type: Schema.ObjectId}]
+  users_favlist: {type: [Schema.Types.ObjectId]}
 })
 
 const Boardgame = mongoose.model('Boardgame', boardgameSchema)

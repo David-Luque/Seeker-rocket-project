@@ -1,39 +1,40 @@
  
 
- <form action="/edit/proto/{{_id}}" method="POST">
-  <label for="name"></label>
+<img src="{{image}}" alt="{{name}}">
+
+ <form action="/edit-proto/{{_id}}" method="POST">
+  
+  <label for="name">Name:</label>
   <input type="text" name="name" id="name" default="{{name}}">
-
-  <label for="description"></label>
-  <textarea name="description" id="description" default="{{description}}" cols="30" rows="10"></textarea>
-
-  <label for="min_players"></label>
+  <br>
+  <textarea name="description" id="description" cols="30" rows="10" default="{{description}}"></textarea>
+  <br>
+  <label for="min_players">min nº platers</label>
   <input type="number" name="min_players" id="min_players" default="{{min_players}}">
-
-  <label for="max_players"></label>
+  <br>
+  <label for="max_players">max nº players</label>
   <input type="number" name="max_players" id="max_players" default="{{max_players}}">
-
-  <label for="min_playtime"></label>
-  <input type="number" name="min_playtime" id="min_playtime" default="{{min_playtime}}">
-
-  <label for="max_playtime"></label>
-  <input type="number" name="max_playtime" id="max_playtime" default="{{max_playtime}}">
-
-  <label for="complexity"></label>
-  <input type="number" name="complexity" id="complexity" default="{{complexity}}">
-
-  <label for="mechanisms"></label>
-  <input type="text" name="mechanisms" id="mechanisms" default="{{mechanisms}}">
-
-  <label for="category"></label>
+  <br>
+  <label for="min_playtime">min playtime:</label>
+  <input type="number" name="min_playtime" id="min_playtime" default="{{min_players}}">
+  <br>
+  <label for="max_playtime">max playtime:</label>
+  <input type="number" name="max_playtime" id="max_playtime" default="{{max_players}}">
+  <br>
+  <label for="complexity">complexity</label>
+  <input type="number" name="complexity" id="complexity" default="{{min_players}}">
+  <br>
+  <label for="mechanisms">mechanisms</label>
+  <input type="text" name="mechanisms" id="mechanisms" default="{{complexity}}">
+  <br>
+  <label for="category">category</label>
   <input type="text" name="category" id="category" default="{{category}}">
-
-  <label for="image"></label>
+  <br>
+  <label for="image">image url</label>
   <input type="text" name="image" id="image" default="{{image}}">
-
-  <label for="designer_notes"></label>
-  <textarea name="designer_notes" id="designer_notes" default="{{designer_notes}}" cols="30" rows="10"></textarea>
-
-  <button type="submit">CONFIRM</button>
+  <br>
+  <textarea name="designer_notes" id="designer_notes" cols="30" rows="10" default="{{designer_notes}}"></textarea>
+  <br>
+  <button type="submit">EDIT</button>
 
  </form>
