@@ -1,11 +1,8 @@
-<ul>
-{{#each games}}
-    <li>
-        <a href="/game-info/{{_id}}">
-            <img src="{{image}}" alt="{{name}}">
-            <br>
-            <p>{{name}}</p>
-        </a>
-    </li>
-{{/each}}
-</ul>
+
+<div class="container">
+  <div class="row">
+      {{#each games}}
+        {{> allGamesCard}}
+      {{/each}}
+  </div>
+</div>

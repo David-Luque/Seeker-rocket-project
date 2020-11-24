@@ -15,7 +15,7 @@ router.post('/signup', (req, res, next) => {
   const {username, password} = req.body
 
   if(username === '' || password === '') {
-    res.render('welcomePage', {invalidMessage: 'Please insert valid username and password'})
+    res.render('welcomePage', {layout: false, invalidMessage: 'Insert valid username and password'})
     return 
   }
 
@@ -26,11 +26,11 @@ router.post('/signup', (req, res, next) => {
       .then(hashedPass => {
         User.create({username, password: hashedPass})
         .then(() => {
-          res.render('welcomePage', {succesMessage: 'Successfully registered. Now you can login'})
+          res.render('welcomePage', {layout: false, succesMessage: 'Successfully registered'})
         })
       })
     } else {
-      res.render('welcomePage', {alreadyMessage: 'This user already exist'})
+      res.render('welcomePage', {layout: false, alreadyMessage: 'This user already exist'})
     }
   })
   .catch(err => console.log(err))
@@ -38,7 +38,7 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', passport.authenticate("local", {
   successRedirect: '/user-homepage',
-  failureRedirect: '/',
+  failureRedirect: '/error-login',
   failureFlash: true,
   passReqToCallback: true
 }))
