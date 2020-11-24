@@ -123,10 +123,11 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 const index = require('./routes/index');
 const userRoutes = require('./routes/userRoutes');
 const dataRoutes = require('./routes/dataRoutes');
+const authRoutes = require('./routes/authRoutes');
 app.use('/', index);
 app.use('/', userRoutes);
 app.use('/', dataRoutes);
-
+app.use('/', authRoutes);
 
 
 module.exports = app;

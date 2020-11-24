@@ -6,19 +6,19 @@
 
   <img src={{image}} alt="{{name}}">
 
-  <p>{{description}}</p> 
+  <p>description: {{description}}</p> 
 
   <p>Players: {{min_players}} - {{max_players}}</p>
 
-  <p>Play time: {{min_playtime}} - {{max_playtime}}</p>
+  <p>Play time: {{min_playtime}} - {{max_playtime}} min</p>
 
-  <p>Complexity: {{complexity}}</p>
+  <p>Complexity: {{complexity}} / 5</p>
 
   <p>category: {{category}}</p>
 
-  <p>mechanisms: {{mechanism}}</p>
+  <p>mechanisms: {{mechanisms}}</p>
 
-  <p>designer_notes: {{designer_notes}}</p>
+  <p>designer notes: {{designer_notes}}</p>
 
   <form action="/edit-proto/{{_id}}" method="GET">
     <button type="submit" class="btn btn-outline-success btn-lg">EDIT PROTOTIPE</button>

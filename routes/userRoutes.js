@@ -5,62 +5,8 @@ const bcrypt  = require('bcrypt');
 const passport = require('passport');
 const ensureLogin = require('connect-ensure-login')
 
-const User = require('../models/User')
 const Boardgame = require('../models/Boardgame')
 const Prototipe = require('../models/Prototipe');
-// const { routes } = require('../app');
-
-//rute autentication
-
-
-router.post('/signup', (req, res, next) => {
-  console.log(req.body)
-  const {username, password} = req.body
-
-  if(username === '' || password === '') {
-    res.render('welcomePage', {invalidMessage: 'Please insert valid username and password'})
-    return 
-  }
-
-  User.findOne({username})
-  .then(user => {
-    if(!user) {
-      bcrypt.hash(password, 10)
-      .then(hashedPass => {
-        User.create({username, password: hashedPass})
-        .then(() => {
-          res.render('welcomePage', {succesMessage: 'Successfully registered. Now you can login'})
-        })
-      })
-    } else {
-      res.render('welcomePage', {alreadyMessage: 'This user already exist'})
-    }
-  })
-  .catch(err => console.log(err))
-});
-
-
-
-router.post('/login', passport.authenticate("local", {
-  successRedirect: '/user-homepage',
-  failureRedirect: '/',
-  failureFlash: true,
-  passReqToCallback: true
-}))
-
-//ruta privada que solo puedas ver si has iniciado sesion, que tambien sirve para comprobar que hemos iniciado sesion. El MIDDLEWARE se pono como argumento entre el enlace y el callback function
-// router.get('/private-page', ensureLogin.ensureLoggedIn('/log-in'), (req, res) => { // => detro de los parentesis de "ensureLogin.ensureLoggedIn()" se pone la direccion a la que quieres que te redirija si no estás logueado. CUIDADO porque por defecto pone 'login'
-//   res.render('private', {user: req.user.username})
-// })
-
-
-
-
-
-router.get("/user-homepage", ensureLogin.ensureLoggedIn("/"), (req, res) => {
-  res.render("userHomePage", { user: req.user });
-});
-
 
 
 
@@ -72,10 +18,7 @@ const checkForAuth = (req, res, next) =>{
   }
 }
 
-router.get('/logout', checkForAuth, (req, res) => {
-  req.logout()
-  res.redirect('/')
-})
+
 
 router.get('/all-games', checkForAuth, (req, res) =>{
   Boardgame.find({})
@@ -84,28 +27,16 @@ router.get('/all-games', checkForAuth, (req, res) =>{
   })
 })
 
-router.get('/game-info/:id', checkForAuth, (req, res) => {
-  const id = req.params.id
-  Boardgame.findById(id)
-  .then(game => {
-    res.render('gameInfo', game)
-  })
-  .catch()
-  
-});
 
-router.post('/add-game/:id', checkForAuth, (req, res) =>{
-  
-  const id = req.params.id
-  const user = req.user
-  
-  Boardgame.findByIdAndUpdate(id, {$push: {users_favlist: user._id}}, {new: true})
-  .then(game => {
-    console.log(game)
-    res.redirect(`/game-info/${game._id}`)
+
+router.get('/games-collection', checkForAuth, (req, res) =>{
+
+  Boardgame.find({users_favlist: {$in: [req.user._id]}})
+  .then(games => {
+    res.render('boardgamesCollection', {games})
   })
+  .catch(err=>res.send(err))
 })
-
 
 router.get('/prototipes-collection', checkForAuth, (req, res) => {
   const user = req.user
@@ -117,6 +48,17 @@ router.get('/prototipes-collection', checkForAuth, (req, res) => {
   
 });
 
+
+
+router.get('/game-info/:id', checkForAuth, (req, res) => {
+  const id = req.params.id
+  Boardgame.findById(id)
+  .then(game => {
+    res.render('gameInfo', game)
+  })
+  .catch()
+  
+});
 
 router.get('/proto-info/:id', checkForAuth, (req, res) => {
   
@@ -130,30 +72,26 @@ router.get('/proto-info/:id', checkForAuth, (req, res) => {
 })
 
 
-router.get('/edit-proto/:id', checkForAuth, (req, res) => {
-  const id = req.params.id
-  Prototipe.findById(id)
-  .then(game => {
-    res.render('editPrototipe', game)
-  })
-  .catch(err=>{res.send(err)})
-});
 
-
-router.post('/edit-proto/:id', checkForAuth, (req, res) => {
+router.post('/add-game/:id', checkForAuth, (req, res) =>{
   
   const id = req.params.id
-  const editedProto = req.body
   const user = req.user
   
-  Prototipe.findByIdAndUpdate(id, {...editedProto, owner: user._id})
+  Boardgame.findById(id)
   .then(game => {
-    console.log(game)
-    res.redirect(`/proto-info/${game._id}`)
+      if (game.users_favlist.includes(user._id)) {
+        game.alertMessage = "This game is already in your collection";
+        res.render('gameInfo', game)
+      } else {
+        Boardgame.findByIdAndUpdate(id, {$push: {users_favlist: user._id}}, {new: true})
+        .then(game => {
+        console.log(game)
+        res.redirect(`/game-info/${game._id}`)
+        })
+      } 
   })
-  .catch(err=>{res.send(err)})
-});
-
+})
 
 router.get('/create-prototipe', checkForAuth, (req, res)=>{
   res.render('createPrototipe')
@@ -171,30 +109,77 @@ router.post('/create-prototipe', checkForAuth, (req, res)=>{
 
 
 
-//_____________________________________________________________________________
-
-// TO REVIEW
-
-router.get('/games-collection', checkForAuth, (req, res) =>{
-
-  Boardgame.find({users_favlist: {$in: [req.user._id]}})
-  .then(games => {
-    res.render('boardgamesCollection', {games})
-  })
-  .catch(err=>res.send(err))
+router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
+  
+  console.log(req.params.id)
+  const newComment = req.body.comments
+  const id = req.params.id
+  
+  if(newComment == "") {
+    Boardgame.findById(id)
+    .then(game => {
+      game.commentMessage = "Please, insert a valid comment";
+      res.render('gameInfo', game)
+    })
+  } else {
+    Boardgame.findByIdAndUpdate(id, {$push: {comments: newComment}}, {new: true})
+    .then((game) => {
+      res.redirect(`/game-info/${game._id}`)
+    })
+    .catch(error => console.log('nope'))
+  }
 })
 
+router.get('/edit-proto/:id', checkForAuth, (req, res) => {
+  const id = req.params.id
+  Prototipe.findById(id)
+  .then(game => {
+    console.log(game)
+    res.render('editPrototipe', game)
+  })
+  .catch(err=>{res.send(err)})
+});
 
-router.get('/remove-boardgame/:id', checkForAuth, (req, res, next)=>{
+router.post('/edit-proto/:id', checkForAuth, (req, res) => {
+  
+  const id = req.params.id
+  const editedProto = req.body
+  const user = req.user
+  
+  Prototipe.findByIdAndUpdate(id, {...editedProto, owner: user._id})
+  .then(game => {
+    console.log(game)
+    res.redirect(`/proto-info/${game._id}`)
+  })
+  .catch(err=>{res.send(err)})
+});
+
+
+
+router.get('/remove-game/:id', checkForAuth, (req, res, next)=>{
   const user = req.user
   const id = req.params.id
   
   Boardgame.findById(id)
   .then((game) => {
-    const userIndex = game.users_favlist.indexOf(user._id)
-    const newFavList = game.users_favlist.splice(userIndex, 1)
-    Boardgame.findByIdAndUpdate(id, {users_favlist: newFavList})
-    .then(() => res.redirect('/games-collection'))
+    if(game.users_favlist.includes(user._id)) {
+      const userIndex = game.users_favlist.indexOf(user._id)
+      const originalList = game.users_favlist
+      
+      originalList.splice(userIndex, 1)
+      
+      Boardgame.findByIdAndUpdate(id, {users_favlist: originalList}, {new:true})
+      .then(() => {
+        res.redirect('/games-collection')
+      })
+    } else {
+      Boardgame.findById(id)
+      .then(game => {
+      game.deleteMessage = "This game isn't in your collection ";
+      res.render('gameInfo', game)
+    })
+    }
+
   })
   .catch(error => res.send(error))
 })
@@ -206,15 +191,10 @@ router.get('/remove-prototipe/:id', checkForAuth, (req, res, next)=>{
   .catch(error => res.send(error))
 })
 
-router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
-  const id = req.params.id
-  const comment = req.body
-  Boardgame.findByIdAndUpdate(id, {$push: {comments: comment}}, {new: true})
-  .then(() => res.redirect('/prototipes-collection'))
-  .catch(error => res.send(error))
-})
 
-//_____________________________________________________________________________
+
+
+
 
 
 

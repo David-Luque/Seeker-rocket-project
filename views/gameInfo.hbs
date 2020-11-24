@@ -4,7 +4,7 @@
 
 <div>
 
-  <img src={{image}} alt="{{name}}">
+  <img src="{{image}}" alt="{{name}}">
 
   <p>{{description}}</p> 
 
@@ -24,19 +24,32 @@
 
   <p>mechanisms: {{mechanism}}</p>
 
-  <form action="/add-game/{{_id}}" method="GET">
+  <form action="/add-game/{{_id}}" method="POST">
     <button type="submit" class="btn btn-outline-success btn-lg">Add to my collection</button>
   </form>
+  {{#if alertMessage}}
+    <p>{{alertMessage}}</p>
+  {{/if}}
 
-    <form action="/comment-game/{{_id}}" method="POST">
+  <form action="/comment-game/{{_id}}" method="POST">
     <textarea name="comments" id="comments" cols="30" rows="10" placeholder="whrite a comment here"></textarea>
     <button type="submit" class="btn btn-outline-warning btn-lg">WRITE COMMENT</button>
+    {{#if commentMessage}}
+      <p>{{commentMessage}}</p>
+    {{/if}}
   </form>
   
-  <a href="/remove-boardgame/{{_id}}">REMOVE FROM MY COLLECTION</a>
+  <a href="/remove-game/{{_id}}">REMOVE FROM MY COLLECTION</a>
+    {{#if deleteMessage}}
+      <p>{{deleteMessage}}</p>
+    {{/if}}
+  
 
-  <p>Comments:
+  <p>Comments:</p>
+  <ul>
     {{#each comments}}
-      {{comments}}</p>
+      <li>{{this}}</li>
     {{/each}}
+  </ul>
+
 </div>
