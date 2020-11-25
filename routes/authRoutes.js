@@ -6,7 +6,7 @@ const passport = require('passport');
 const ensureLogin = require('connect-ensure-login')
 
 const User = require('../models/User')
-
+const Boardgame = require('../models/Boardgame')
 
 
 
@@ -44,7 +44,12 @@ router.post('/login', passport.authenticate("local", {
 }))
 
 router.get("/user-homepage", ensureLogin.ensureLoggedIn("/"), (req, res) => {
-  res.render("userHomePage", { user: req.user });
+  Boardgame.find({})
+  .then(games => {
+    res.render("userHomePage", {games});
+  })
+  .catch( err => console.log (err))
+  
 });
 
 router.get('/logout', ensureLogin.ensureLoggedIn("/"), (req, res) => {

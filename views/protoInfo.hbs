@@ -1,4 +1,4 @@
-
+{{!-- 
 
 <h2>{{name}}</h2>
 
@@ -26,4 +26,55 @@
   
   <a href="/remove-prototipe/{{_id}}">DELETE PROTOTIPE</a>
 
+</div> --}}
+
+
+
+<div class="jumbotron game-info-view">
+  <div class="game-info">
+    <div class="details-image">
+      <img src="{{image}}" alt="{{name}}">
+    </div>
+    <div class="details-info">
+      <h3>{{name}}</h3>
+      <p>{{description}}</p> 
+      <hr>
+      <p>Tags: {{tags}}</p>
+      <p>{{min_players}} - {{max_players}} players</p>
+      <p>Play time: {{min_playtime}} - {{max_playtime}} min</p>
+      {{!-- <p>Complexity: {{complexity}} / 5</p> --}}
+      <p></p>
+      <p>Categories: {{category}}</p>
+      <p>Mechanisms: {{mechanism}}</p>
+
+      <form action="/edit-proto/{{_id}}" method="GET">
+        <button type="submit" class="add-btn btn btn-outline-success btn-lg">EDIT PROTOTYPE</button>
+      </form>
+      {{!-- {{#if alertMessage}}
+        <p>{{alertMessage}}</p>
+      {{/if}} --}}
+
+      <a href="/remove-prototipe/{{_id}}">Delete prototype</a>
+        {{!-- {{#if deleteMessage}}
+          <p>{{deleteMessage}}</p>
+        {{/if}} --}}
+    </div>
+  </div>
+  <div class="comments">
+    <div class="comment-section">
+      <form class="comment-form" action="/add-note/{{_id}}" method="POST">
+          <textarea name="designer_notes" id="comments" rows="2" placeholder="Add notes here"></textarea>
+          <button type="submit" class="comment-btn btn btn-outline-warning btn-lg">Save</button>
+          {{!-- {{#if commentMessage}}
+            <div class="comment-alert alert alert-warning" role="alert">
+              {{commentMessage}} --}}
+            {{!-- </div>
+          {{/if}} --}}
+      </form>
+      <div class="all-comments">
+        <p> <i>Design notes:</i> </p>
+        <p>{{designer_notes}}</p>
+      </div>
+    </div>
+  </div>
 </div>

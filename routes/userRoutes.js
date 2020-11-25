@@ -86,8 +86,8 @@ router.post('/add-game/:id', checkForAuth, (req, res) =>{
       } else {
         Boardgame.findByIdAndUpdate(id, {$push: {users_favlist: user._id}}, {new: true})
         .then(game => {
-        console.log(game)
-        res.redirect(`/game-info/${game._id}`)
+          game.alertMessage = "Successfully added to your collection";
+          res.render('gameInfo', game)
         })
       } 
   })
@@ -118,7 +118,7 @@ router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
   if(newComment == "") {
     Boardgame.findById(id)
     .then(game => {
-      game.commentMessage = "Please, insert a valid comment";
+      game.commentMessage = "Please, insert valid comment";
       res.render('gameInfo', game)
     })
   } else {
@@ -128,6 +128,24 @@ router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
     })
     .catch(error => console.log('nope'))
   }
+})
+
+router.post('/add-note/:id', checkForAuth, (req, res, next)=> {
+  const id = req.params.id
+  const noteToAdd = `. ${req.body.designer_notes}`
+  Prototipe.findById(id)
+  .then(game => {
+    const oldNotes = game.designer_notes;
+    const newNotes = oldNotes.concat(noteToAdd)
+    console.log(newNotes)
+    Prototipe.findByIdAndUpdate(id, {designer_notes: newNotes}, {new: true})
+    .then(result => {
+      console.log(result) 
+      res.redirect (`/proto-info/${game._id}`)
+    })
+    
+  })
+  .catch(err => console.log(err))
 })
 
 router.get('/edit-proto/:id', checkForAuth, (req, res) => {

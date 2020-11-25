@@ -1,9 +1,14 @@
 
 <div class="jumbotron">
-  <h1 class="display-4">Welcome back, {{user.username}}!</h1>
-  <p class="lead"> texto de ejemplo</p>
+  <h1 class="display-4">Welcome back!</h1>
   <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <p class="lead">Registra tu coleccion de juegos, busca y descubre nuevos juegos, registra y lleva el control de tus propios prototipos</p>
 </div>
 
-
+<div class="container">
+  <div class="row">
+      {{#each games}}
+        {{> allGamesCard}}
+      {{/each}}
+  </div>
+</div>

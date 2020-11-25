@@ -1,55 +1,57 @@
 
 
-<h2>{{name}}</h2>
 
-<div>
 
-  <img src="{{image}}" alt="{{name}}">
+<div class="jumbotron game-info-view">
+  <div class="game-info">
+    <div class="details-image">
+      <img src="{{image}}" alt="{{name}}">
+    </div>
+    <div class="details-info">
+      <h3>{{name}}</h3>
+      <p>{{description}}</p> 
+      <hr>
+      <p>Rating: {{rating}} - Global ranking: nº{{rank}}</p> 
+      <p>Published in: {{year_published}}</p>
+      <p>{{min_players}} - {{max_players}} players</p>
+      <p>Play time: {{min_playtime}} - {{max_playtime}} min</p>
+      <p>Complexity: {{complexity}} / 5</p>
+      <p></p>
+      <p>Category: {{category}}</p>
+      <p>Mechanisms: {{mechanism}}</p>
 
-  <p>{{description}}</p> 
+      <form action="/add-game/{{_id}}" method="POST">
+        <button type="submit" class="add-btn btn btn-outline-success btn-lg">ADD TO COLLECTION</button>
+      </form>
+      {{#if alertMessage}}
+        <p>{{alertMessage}}</p>
+      {{/if}}
 
-  <p>Rating: {{rating}}</p> 
-
-  <p>Published in: {{year_published}}</p>
-
-  <p>Players: {{min_players}} - {{max_players}}</p>
-
-  <p>Play time: {{min_playtime}} - {{max_playtime}}</p>
-
-  <p>Complexity: {{complexity}}</p>
-
-  <p>Global ranking: {{rank}}</p>
-
-  <p>category: {{category}}</p>
-
-  <p>mechanisms: {{mechanism}}</p>
-
-  <form action="/add-game/{{_id}}" method="POST">
-    <button type="submit" class="btn btn-outline-success btn-lg">Add to my collection</button>
-  </form>
-  {{#if alertMessage}}
-    <p>{{alertMessage}}</p>
-  {{/if}}
-
-  <form action="/comment-game/{{_id}}" method="POST">
-    <textarea name="comments" id="comments" cols="30" rows="10" placeholder="whrite a comment here"></textarea>
-    <button type="submit" class="btn btn-outline-warning btn-lg">WRITE COMMENT</button>
-    {{#if commentMessage}}
-      <p>{{commentMessage}}</p>
-    {{/if}}
-  </form>
-  
-  <a href="/remove-game/{{_id}}">REMOVE FROM MY COLLECTION</a>
-    {{#if deleteMessage}}
-      <p>{{deleteMessage}}</p>
-    {{/if}}
-  
-
-  <p>Comments:</p>
-  <ul>
-    {{#each comments}}
-      <li>{{this}}</li>
-    {{/each}}
-  </ul>
-
+      <a href="/remove-game/{{_id}}">Remove from my collection</a>
+        {{#if deleteMessage}}
+          <p>{{deleteMessage}}</p>
+        {{/if}}
+    </div>
+  </div>
+  <div class="comments">
+    <div class="comment-section">
+      <form class="comment-form" action="/comment-game/{{_id}}" method="POST">
+          <textarea name="comments" id="comments" rows="2" placeholder="Leave comment here"></textarea>
+          <button type="submit" class="comment-btn btn btn-outline-warning btn-lg">Send comment </button>
+          {{#if commentMessage}}
+            <div class="comment-alert alert alert-warning" role="alert">
+              {{commentMessage}}
+            </div>
+          {{/if}}
+      </form>
+      <div class="all-comments">
+        <p>Comments:</p>
+          <ul>
+            {{#each comments}}
+              <li>"{{this}}"</li>
+            {{/each}}
+          </ul>
+      </div>
+    </div>
+  </div>
 </div>
