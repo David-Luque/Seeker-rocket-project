@@ -25,23 +25,100 @@ const checkForAuth = (req, res, next) =>{
 
 
 //route to search by name
-router.get('/search', (req, res, next) => {
+router.post('/search-by-name', checkForAuth, (req, res) => {
+  const name = req.body.search
   
-  Model.findOne()
+  const firstLetter = name.charAt(0)
+  const firstUpperLetter = firstLetter.toUpperCase()
+  const restWord = name.slice(1, name.length)
+  const finalWord = firstUpperLetter.concat(restWord)
+  
+
+  Boardgame.findOne({name: finalWord})
+  .then(game => {
+    if(!game) {
+      res.redirect('/not-results')
+    } else {
+      res.redirect(`/game-info/${game._id}`)
+    }
+  })
+  .catch(err => console.log(err))
 });
 
-
+router.get('/not-results', checkForAuth, (req, res) => {
+  res.render ('notResult')
+})
 
 //____________________________________________________________________________
 //ROUTES TO SORT
 
 
-//route to SORT by published year
-router.get('/search', (req, res, next) => {
-  req.query
-
-  Model.findOne()
+//route to SORT alphabetically
+router.get('/sort-name', checkForAuth, (req, res, next) => {
+  
+  Boardgame.find({}).sort( {name: 1} )
+  .then(games => {
+    res.render ('allGames', {games})
+  })
+  .catch(err => console.log(err))
 });
+
+
+router.get('/sort-rating', checkForAuth, (req, res, next) => {
+  
+  Boardgame.find({}).sort( {rating: -1} )
+  .then(games => {
+    res.render ('allGames', {games})
+  })
+  .catch(err => console.log(err))
+});
+
+
+router.get('/sort-rank', checkForAuth, (req, res, next) => {
+  
+  Boardgame.find({}).sort( {rank: 1} )
+  .then(games => {
+    res.render ('allGames', {games})
+  })
+  .catch(err => console.log(err))
+});
+
+router.get('/sort-complexity', checkForAuth, (req, res, next) => {
+  
+  Boardgame.find({}).sort( {complexity: -1} )
+  .then(games => {
+    res.render ('allGames', {games})
+  })
+  .catch(err => console.log(err))
+});
+
+
+router.get('/sort-recent-year', checkForAuth, (req, res, next) => {
+  
+  Boardgame.find({}).sort( {year_published: -1} )
+  .then(games => {
+    res.render ('allGames', {games})
+  })
+  .catch(err => console.log(err))
+});
+
+router.get('/filter-players/:players', checkForAuth, (req, res, next) => {
+  console.log(req.query)
+
+
+  Boardgame.find({}, {$and: [{$min_players: {$gte: X}}, {$max_players: {$lte: X}}]})
+  .then(games => {
+    res.render ('allGames', {games})
+  })
+  .catch(err => console.log(err))
+});
+
+
+
+router.get('/advanced-search', checkForAuth, (req, res, next) => {
+  res.render('advancedSearch')
+})
+
 
 
 

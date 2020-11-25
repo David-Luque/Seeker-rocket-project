@@ -1,0 +1,98 @@
+  
+<div class="jumbotron advanced-search-view">
+  <div class="searchform-group">
+    
+
+    <form class="searchform-players-playtime" action="/create-prototipe" method="POST">  
+ 
+      <div class="form-row">
+        <div class="col">
+          <label for="min_players">min nº players</label>
+          <input type="number" name="min_players" id="min_players" class="form-control" value="{{min_players}}">
+        </div>
+        <div class="col">
+          <label for="min_players">max nº players</label>
+          <input type="number" name="max_players" id="max_players" class="form-control" value="{{max_players}}">
+        </div>
+      </div>
+    
+      <div class="form-row">
+        <div class="col">
+          <label for="min_playtime">min playtime</label>
+          <input type="number" name="min_playtime" id="min_playtime" class="form-control" value="{{min_playtime}}">
+        </div>
+        <div class="col">
+          <label for="max_playtime">max playtime</label>
+          <input type="number" name="max_playtime" id="max_playtime" class="form-control" value="{{max_playtime}}">
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-outline-success">Save</button>
+    
+    </form>
+
+{{!-- ________________________ --}}
+
+    <form class="searchform-year-complex-rating" action="/create-prototipe" method="POST">  
+ 
+      <div class="form-group">
+        <label for="mechanisms">Mechanisms:</label>
+        <input type="text" class="form-control" name="mechanisms" id="mechanisms" value="{{mechanisms}}">
+      </div>
+  
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" class="form-control" name="category" id="category" value="{{category}}">
+      </div>
+
+      <button type="submit" class="btn btn-outline-success">Save</button>
+    
+    </form>
+
+    {{!-- ________________________--}}
+    
+    <form class="searchform-mechanisms-category" action="/create-prototipe" method="POST">  
+        
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+        <label class="form-check-label" for="inlineRadio1">Published year</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+        <label class="form-check-label" for="inlineRadio2">Complexity</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+        <label class="form-check-label" for="inlineRadio3">Rating</label>
+      </div>
+
+      <div class="form-group">
+        {{!-- <label for="exampleFormControlSelect1">Example select</label> --}}
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>greater than</option>
+          <option>lower than</option>
+          <option>exactly</option>
+        </select>
+      </div>
+      <div class="form-group">
+    
+
+      <div class="form-row">
+        <div class="col">
+          <label for="min_players">min nº players</label>
+          <input type="number" name="min_players" id="min_players" class="form-control" value="{{min_players}}">
+        </div>
+        <div class="col">
+          <label for="min_players">max nº players</label>
+          <input type="number" name="max_players" id="max_players" class="form-control" value="{{max_players}}">
+        </div>
+      </div>
+    
+      
+
+      <button type="submit" class="btn btn-outline-success">Save</button>
+    </form>
+
+
+  </div>
+ </div>

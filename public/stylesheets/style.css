@@ -74,6 +74,7 @@ nav{
   margin-top: 2rem;
 }
 
+
 .boardgame-card {
   margin: 0.5rem 0;
   padding: 0;
@@ -264,4 +265,26 @@ br {
 .edit-form form button,
 .create-form form button {
   font-size: 1.3rem;
+}
+
+div.boardgame-card,
+div.proto-card,
+div.collection-card {
+  border-radius: 10%;
+}
+
+.searchform-group {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchform-players-playtime,
+.searchform-year-complex-rating,
+.searchform-mechanisms-category {
+  margin: 0, 2.5%;
+  width: 30%;
 }
