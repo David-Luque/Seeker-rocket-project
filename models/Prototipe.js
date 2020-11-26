@@ -10,7 +10,6 @@ const protoSchema = new Schema({
   max_players: {type: Number},
   min_playtime: {type: Number},
   max_playtime: {type: Number},
-  // complexity: {type: Number, min: 1, max: 5},
   mechanisms: {type: String},
   category: {type: String},
   image: {type: String},
