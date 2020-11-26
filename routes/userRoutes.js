@@ -19,7 +19,7 @@ const checkForAuth = (req, res, next) =>{
 }
 
 
-
+//Route to see ALL GAMES
 router.get('/all-games', checkForAuth, (req, res) =>{
   Boardgame.find({})
   .then(games => {
@@ -28,7 +28,7 @@ router.get('/all-games', checkForAuth, (req, res) =>{
 })
 
 
-
+//Routes to see USER COLLECTIONS
 router.get('/games-collection', checkForAuth, (req, res) =>{
 
   Boardgame.find({users_favlist: {$in: [req.user._id]}})
@@ -49,7 +49,7 @@ router.get('/prototipes-collection', checkForAuth, (req, res) => {
 });
 
 
-
+//Routes to see GAME/PROTO DETAILS
 router.get('/game-info/:id', checkForAuth, (req, res) => {
   const id = req.params.id
   Boardgame.findById(id)
@@ -72,7 +72,7 @@ router.get('/proto-info/:id', checkForAuth, (req, res) => {
 })
 
 
-
+//Routes to ADD and COMMENT game
 router.post('/add-game/:id', checkForAuth, (req, res) =>{
   
   const id = req.params.id
@@ -92,22 +92,6 @@ router.post('/add-game/:id', checkForAuth, (req, res) =>{
       } 
   })
 })
-
-router.get('/create-prototipe', checkForAuth, (req, res)=>{
-  res.render('createPrototipe')
-})
-
-router.post('/create-prototipe', checkForAuth, (req, res)=>{
-  const createdProto = req.body
-  const user = req.user
-  Prototipe.create({...createdProto, owner: user.id})
-  .then(()=>{
-    res.redirect('/prototipes-collection')
-  })
-  .catch(err=>res.send(err))
-})
-
-
 
 router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
   
@@ -130,6 +114,24 @@ router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
   }
 })
 
+
+//Routes to CREATE prototype
+router.get('/create-prototipe', checkForAuth, (req, res)=>{
+  res.render('createPrototipe')
+})
+
+router.post('/create-prototipe', checkForAuth, (req, res)=>{
+  const createdProto = req.body
+  const user = req.user
+  Prototipe.create({...createdProto, owner: user.id})
+  .then(()=>{
+    res.redirect('/prototipes-collection')
+  })
+  .catch(err=>res.send(err))
+})
+
+
+//Routes to EDIT prototype
 router.post('/add-note/:id', checkForAuth, (req, res, next)=> {
   const id = req.params.id
   const noteToAdd = `. ${req.body.designer_notes}`
@@ -173,7 +175,7 @@ router.post('/edit-proto/:id', checkForAuth, (req, res) => {
 });
 
 
-
+//Routes to REMOVE and DELETE games and prototipes
 router.get('/remove-game/:id', checkForAuth, (req, res, next)=>{
   const user = req.user
   const id = req.params.id
@@ -220,21 +222,21 @@ router.get('/remove-prototipe/:id', checkForAuth, (req, res, next)=>{
 
 
 
-//ESTA FORMA DE ASEGURAR AL PROPIETARIO DEL QUOTE ES OBLIGATORIA EN RUTAS DE EDITAR Y ELIMINAR; OPCIONAL SI DEJAR VER O NO A LOS DEMAS LOS DETALLES
-//SE PODRIA SACAR COMO MIDDLEWARE, SIMILAR A "checkForAuth", y ponerla fuera para luego llamarla, como los ROLES
-router.get('/editPrototipe/:id', checkForAuth, (req, res) => {
-  const id = req.params.id 
-  Prototipes.findOne({_id: id})
-  .then(data=>{
-  // A continuacion comparamos el id del quote buscado antes con el del usuario activo (ambos pasados a strings porque son objetos (type: Schema.Types.ObjectId) de manera que si coinciden, porque es el mismo usuario que lo creó, podemos acceder a la view de editar el quote; si no, redirect al home u otro sitio)
-    if(data.owner.toString() == req.user._id.toString()) { 
-      res.render('editPrototipe')
-    } else {
-      res.redirect('/user-homepage')
-    }
-  })
-  .catch(err=>{res.send(err)}) 
-})
+// //ESTA FORMA DE ASEGURAR AL PROPIETARIO DEL QUOTE ES OBLIGATORIA EN RUTAS DE EDITAR Y ELIMINAR; OPCIONAL SI DEJAR VER O NO A LOS DEMAS LOS DETALLES
+// //SE PODRIA SACAR COMO MIDDLEWARE, SIMILAR A "checkForAuth", y ponerla fuera para luego llamarla, como los ROLES
+// router.get('/editPrototipe/:id', checkForAuth, (req, res) => {
+//   const id = req.params.id 
+//   Prototipes.findOne({_id: id})
+//   .then(data=>{
+//   // A continuacion comparamos el id del quote buscado antes con el del usuario activo (ambos pasados a strings porque son objetos (type: Schema.Types.ObjectId) de manera que si coinciden, porque es el mismo usuario que lo creó, podemos acceder a la view de editar el quote; si no, redirect al home u otro sitio)
+//     if(data.owner.toString() == req.user._id.toString()) { 
+//       res.render('editPrototipe')
+//     } else {
+//       res.redirect('/user-homepage')
+//     }
+//   })
+//   .catch(err=>{res.send(err)}) 
+// })
 
 
 

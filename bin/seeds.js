@@ -2,8 +2,9 @@
 const mongoose = require('mongoose');
 const Boardgame = require('../models/Boardgame');
 
- mongoose
-.connect(`mongodb+srv://david-la-91:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, { useNewUrlParser: true }, { useUnifiedTopology: true })
+
+mongoose
+.connect(`mongodb+srv://david-la-91:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
 .then(x => {
   console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
 })
@@ -18,7 +19,7 @@ const games = [
     year_published: 2018,
     description: 'a very long game',
     rating: 94,
-    comments:'',
+    comments:'POLE',
     min_players: 1,
     max_players: 4,
     min_playtime: 30,
@@ -34,7 +35,7 @@ const games = [
     year_published: 2019,
     description: 'confrantation game for two players',
     rating: 85,
-    comments: {type: [String]},
+    comments: 'POLE',
     min_players: 2,
     max_players: 2,
     min_playtime: 30,

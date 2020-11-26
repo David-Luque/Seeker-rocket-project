@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const protoSchema = new Schema({
   name: {type: String, required: true, unique: true},
   description: {type: String},
-  tags: {type: [String]},
+  tags: {type: String},
   min_players: {type: Number, min: 1},
   max_players: {type: Number},
   min_playtime: {type: Number},

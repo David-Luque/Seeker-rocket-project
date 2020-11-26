@@ -1,14 +1,11 @@
 
-
-
-
 <div class="jumbotron game-info-view">
   <div class="game-info">
     <div class="details-image">
       <img src="{{image}}" alt="{{name}}">
     </div>
     <div class="details-info">
-      <h3>{{name}}</h3>
+      <h1>{{name}}</h1>
       <p>{{description}}</p> 
       <hr>
       <p>Rating: {{rating}} - Global rank: nº {{rank}}</p> 
@@ -16,12 +13,20 @@
       <p>{{min_players}} - {{max_players}} players</p>
       <p>Play time: {{min_playtime}} - {{max_playtime}} min</p>
       <p>Complexity: {{complexity}} / 5</p>
-      <p></p>
-      <p>Category: {{category}}</p>
-      <p>Mechanisms: {{mechanism}}</p>
-
+      <p>
+        Mechanisms:
+        {{#each mechanisms}}
+          {{this}}
+        {{/each}}
+      </p>
+      <p>
+        Category:
+        {{#each category}}
+          {{this}}
+        {{/each}}
+      </p>
       <form action="/add-game/{{_id}}" method="POST">
-        <button type="submit" class="add-btn btn btn-outline-success btn-lg">ADD TO COLLECTION</button>
+        <button type="submit" class="add-btn btn btn-outline-success btn-lg">Add to collection</button>
       </form>
       {{#if alertMessage}}
         <p>{{alertMessage}}</p>

@@ -5,10 +5,7 @@ const bcrypt  = require('bcrypt');
 const passport = require('passport');
 const ensureLogin = require('connect-ensure-login')
 
-const User = require('../models/User')
 const Boardgame = require('../models/Boardgame')
-const Prototipe = require('../models/Prototipe')
-
 
 
 const checkForAuth = (req, res, next) =>{
@@ -20,11 +17,8 @@ const checkForAuth = (req, res, next) =>{
 }
 
 
-//____________________________________________________________________________
-//ROUTES TO SEARCH
 
-
-//route to search by name
+//Route to search by Name
 router.post('/search-by-name', checkForAuth, (req, res) => {
   const name = req.body.search
   
@@ -45,15 +39,9 @@ router.post('/search-by-name', checkForAuth, (req, res) => {
   .catch(err => console.log(err))
 });
 
-router.get('/not-results', checkForAuth, (req, res) => {
-  res.render ('notResult')
-})
-
-//____________________________________________________________________________
-//ROUTES TO SORT
 
 
-//route to SORT alphabetically
+//Routes SORT 
 router.get('/sort-name', checkForAuth, (req, res, next) => {
   
   Boardgame.find({}).sort( {name: 1} )
@@ -83,6 +71,7 @@ router.get('/sort-rank', checkForAuth, (req, res, next) => {
   .catch(err => console.log(err))
 });
 
+
 router.get('/sort-complexity', checkForAuth, (req, res, next) => {
   
   Boardgame.find({}).sort( {complexity: -1} )
@@ -103,18 +92,11 @@ router.get('/sort-recent-year', checkForAuth, (req, res, next) => {
 });
 
 
+
+//Routes ADVANCED SEARCH
 router.get('/advanced-search', checkForAuth, (req, res, next) => {
   res.render('advancedSearch')
 })
-
-
-//_____________________________________________________________________
-//TO REVIEW
-
-// router.get('/filter-players/:players', checkForAuth, (req, res, next) => {
-//   console.log(req.query)
-// });
-
 
 
 router.get('/search-players', checkForAuth, (req, res, next) => {
@@ -277,25 +259,91 @@ router.get('/search-parameters', checkForAuth, (req, res, next) => {
 })
 
 
-// const min = req.query.min_playtime
-// const max = req.query.max_playtime
+router.get('/search-mechanism', checkForAuth, (req, res, next) => {
 
-// Boardgame.find({$and: [{min_playtime: {$gte: min}}, {max_playtime: {$lte: max}}]})
-// .then(games => {
-//   if(games.length === 0) {
-//     res.redirect('/not-results')
-//   } else {
-//     res.render ('allGames', {games})
-//   }  
-// })
-// .catch(err => console.log(err))
-
-
-router.get('/search-parameters', checkForAuth, (req, res, next) => {
+  const {
+    auctioning,
+    engine_building,
+    drawing,
+    set_collection,
+    worker_placement,
+    hand_managment,
+    card_drafting, 
+    grid_movement
+  } = req.query
   
+    const allTags = [
+      auctioning,
+      engine_building,
+      drawing,
+      set_collection,
+      worker_placement,
+      hand_managment,
+      card_drafting, 
+      grid_movement
+    ]
+
+    filteredTags = allTags.filter(tag => {
+      return tag !== undefined
+    })
+
+  Boardgame.find({ mechanisms: { $all: filteredTags } } )
+  .then(games => {
+    console.log(games)
+    res.render('allGames', {games})
+  })
+  .catch(err => console.log(err))
+
 })
 
-//_____________________________________________________________________
+
+router.get('/search-category', checkForAuth, (req, res, next) => {
+  
+  const {
+    abstract,
+    cooperative,
+    thematic,
+    strategy,
+    card_game,
+    deduction,
+    party_game, 
+    dexterity,
+    economic,
+    wargame
+  } = req.query
+  
+    const allTags = [
+      abstract,
+      cooperative,
+      thematic,
+      strategy,
+      card_game,
+      deduction,
+      party_game, 
+      dexterity,
+      economic,
+      wargame
+    ]
+
+    filteredTags = allTags.filter(tag => {
+      return tag !== undefined
+    })
+
+  Boardgame.find({ category: { $all: filteredTags } } )
+  .then(games => {
+    console.log(games)
+    res.render('allGames', {games})
+  })
+  .catch(err => console.log(err))
+})
+
+
+//Route NOT SEARCH RESULTS
+router.get('/not-results', checkForAuth, (req, res) => {
+  res.render ('notResult')
+})
+
+
 
 
 module.exports = router;
@@ -303,8 +351,6 @@ module.exports = router;
 
 
 
-
-//find({$and: [{min_players: {$gte: min}}, {max_players: {$lte: max}}]})
 
 
 
