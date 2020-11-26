@@ -2,97 +2,184 @@
 <div class="jumbotron advanced-search-view">
   <div class="searchform-group">
     
+    <div class="searchform-players-playtime">
+      <h5>Search by players or playtime:</h5>
+      <form  action="/search-players" method="GET">  
+        <div class="form-row">
+          <div class="col">
+            <label for="min_players">min nº players</label>
+            <input type="number" name="min_players" id="min_players" class="form-control" value="{{min_players}}">
+          </div>
+          <div class="col">
+            <label for="min_players">max nº players</label>
+            <input type="number" name="max_players" id="max_players" class="form-control" value="{{max_players}}">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">players</button>
+      </form>
+      <form action="/search-playtime" method="GET">
+        <div class="form-row">
+          <div class="col">
+            <label for="min_playtime">min playtime</label>
+            <input type="number" name="min_playtime" id="min_playtime" class="form-control" value="{{min_playtime}}">
+          </div>
+          <div class="col">
+            <label for="max_playtime">max playtime</label>
+            <input type="number" name="max_playtime" id="max_playtime" class="form-control" value="{{max_playtime}}">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">playtime</button>
+      </form>
+    </div>
 
-    <form class="searchform-players-playtime" action="/create-prototipe" method="POST">  
- 
-      <div class="form-row">
-        <div class="col">
-          <label for="min_players">min nº players</label>
-          <input type="number" name="min_players" id="min_players" class="form-control" value="{{min_players}}">
-        </div>
-        <div class="col">
-          <label for="min_players">max nº players</label>
-          <input type="number" name="max_players" id="max_players" class="form-control" value="{{max_players}}">
-        </div>
-      </div>
-    
-      <div class="form-row">
-        <div class="col">
-          <label for="min_playtime">min playtime</label>
-          <input type="number" name="min_playtime" id="min_playtime" class="form-control" value="{{min_playtime}}">
-        </div>
-        <div class="col">
-          <label for="max_playtime">max playtime</label>
-          <input type="number" name="max_playtime" id="max_playtime" class="form-control" value="{{max_playtime}}">
-        </div>
-      </div>
+    {{!-- ________________________ --}}
+
+    <div class="searchform-mechanisms-category">
       
-      <button type="submit" class="btn btn-outline-success">Save</button>
-    
-    </form>
-
-{{!-- ________________________ --}}
-
-    <form class="searchform-year-complex-rating" action="/create-prototipe" method="POST">  
- 
+      <h5>Search by mechanism or category:</h5>
+      
       <div class="form-group">
-        <label for="mechanisms">Mechanisms:</label>
-        <input type="text" class="form-control" name="mechanisms" id="mechanisms" value="{{mechanisms}}">
-      </div>
-  
-      <div class="form-group">
-        <label for="category">Category:</label>
-        <input type="text" class="form-control" name="category" id="category" value="{{category}}">
+
+        <form  action="/search-mechanism" method="GET">  
+          <label for="mechanisms">Mechanisms:</label>
+          <hr>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="auctioning" name="auctioning" value="auctioning">
+            <label class="form-check-label" for="auctioning">auctioning</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="engine-building" name="engine-building" value="engine-building">
+            <label class="form-check-label" for="engine-building">engine-building</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="drawing" name="drawing" value="drawing">
+            <label class="form-check-label" for="drawing">drawing</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="set-collection" name="set-collection" value="set-collection">
+            <label class="form-check-label" for="set-collection">set-collection</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="worker-placement" name="worker-placement" value="worker-placement">
+            <label class="form-check-label" for="worker-placement">worker-placement</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="hand-managment" name="hand-managment" value="hand-managment">
+            <label class="form-check-label" for="hand-managment">hand-managment</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="card-drafting" name="card-drafting" value="card-drafting">
+            <label class="form-check-label" for="card-drafting">card-drafting</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="grid-movement" name="grid-movement" value="grid-movement">
+            <label class="form-check-label" for="grid-movement">grid-movement</label>
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-outline-success">Search</button>
+        </form>
+        
+        <form action="/search-category" method="GET">
+          <label for="mechanisms">Category:</label>
+          <hr>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="abstract" name="abstract" value="abstract">
+            <label class="form-check-label" for="abstract">abstract</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="cooperative" name="cooperative" value="cooperative">
+            <label class="form-check-label" for="cooperative">cooperative</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="thematic" name="thematic" value="thematic">
+            <label class="form-check-label" for="thematic">thematic</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="strategy" name="strategy" value="strategy">
+            <label class="form-check-label" for="strategy">strategy</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="card-game" name="card-game" value="card-game">
+            <label class="form-check-label" for="card-game">card-game</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="deduction" name="deduction" value="deduction">
+            <label class="form-check-label" for="deduction">deduction</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="party-game" name="party-game" value="party-game">
+            <label class="form-check-label" for="party-game">party-game</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="dexterity" name="dexterity" value="dexterity">
+            <label class="form-check-label" for="dexterity">dexterity</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="economic" name="economic" value="economic">
+            <label class="form-check-label" for="economic">economic</label>
+          </div>
+          
+           <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="wargame" name="wargame" value="wargame">
+            <label class="form-check-label" for="wargame">wargame</label>
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-outline-success">Search</button>
+        </form>
+
       </div>
 
-      <button type="submit" class="btn btn-outline-success">Save</button>
-    
-    </form>
+    </div>
 
     {{!-- ________________________--}}
     
-    <form class="searchform-mechanisms-category" action="/create-prototipe" method="POST">  
-        
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-        <label class="form-check-label" for="inlineRadio1">Published year</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-        <label class="form-check-label" for="inlineRadio2">Complexity</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-        <label class="form-check-label" for="inlineRadio3">Rating</label>
-      </div>
-
-      <div class="form-group">
-        {{!-- <label for="exampleFormControlSelect1">Example select</label> --}}
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>greater than</option>
-          <option>lower than</option>
-          <option>exactly</option>
-        </select>
-      </div>
-      <div class="form-group">
-    
-
-      <div class="form-row">
-        <div class="col">
-          <label for="min_players">min nº players</label>
-          <input type="number" name="min_players" id="min_players" class="form-control" value="{{min_players}}">
+    <div class= "searchform-year-complex-rating">
+      <h5>Search by other parameters:</h5>
+      <form  action="/search-parameters" method="GET">  
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="criteria" id="inlineRadio1" value="year_published">
+          <label class="form-check-label" for="inlineRadio1">Published year</label>
         </div>
-        <div class="col">
-          <label for="min_players">max nº players</label>
-          <input type="number" name="max_players" id="max_players" class="form-control" value="{{max_players}}">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="criteria" id="inlineRadio2" value="complexity">
+          <label class="form-check-label" for="inlineRadio2">Complexity</label>
         </div>
-      </div>
-    
-      
-
-      <button type="submit" class="btn btn-outline-success">Save</button>
-    </form>
-
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="criteria" id="inlineRadio3" value="rating">
+          <label class="form-check-label" for="inlineRadio3">Rating</label>
+        </div>
+        <div class="form-group">
+          {{!-- <label for="exampleFormControlSelect1">Example select</label> --}}
+          <select class="form-control" name="preference" id="exampleFormControlSelect1">
+            <option value="greater">greater than</option>
+            <option value="lower">lower than</option>
+            <option value="equal">exactly</option>
+          </select>
+        </div>
+        <div class="form-group">
+        <div class="form-row">
+          <div class="col">
+            <input type="number" name="value" id="value" class="form-control">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Search</button>
+      </form>
+    </div>
 
   </div>
- </div>
+</div>

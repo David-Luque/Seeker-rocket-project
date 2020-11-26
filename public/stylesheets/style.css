@@ -275,16 +275,20 @@ div.collection-card {
 
 .searchform-group {
   width: 100%;
-  margin: 0;
+  margin: 2rem 0;
   padding: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
 }
 
 .searchform-players-playtime,
 .searchform-year-complex-rating,
 .searchform-mechanisms-category {
-  margin: 0, 2.5%;
+ 
   width: 30%;
+}
+
+.searchform-mechanisms-category form div:nth-child(4) { 
+  margin-top: 0.5rem;
 }

@@ -102,25 +102,200 @@ router.get('/sort-recent-year', checkForAuth, (req, res, next) => {
   .catch(err => console.log(err))
 });
 
-router.get('/filter-players/:players', checkForAuth, (req, res, next) => {
-  console.log(req.query)
-
-
-  Boardgame.find({}, {$and: [{$min_players: {$gte: X}}, {$max_players: {$lte: X}}]})
-  .then(games => {
-    res.render ('allGames', {games})
-  })
-  .catch(err => console.log(err))
-});
-
-
 
 router.get('/advanced-search', checkForAuth, (req, res, next) => {
   res.render('advancedSearch')
 })
 
 
+//_____________________________________________________________________
+//TO REVIEW
 
+// router.get('/filter-players/:players', checkForAuth, (req, res, next) => {
+//   console.log(req.query)
+// });
+
+
+
+router.get('/search-players', checkForAuth, (req, res, next) => {
+  
+  const min = req.query.min_players
+  const max = req.query.max_players
+  
+  Boardgame.find({$and: [{min_players: min}, {max_players: max}]})
+  .then(games => {
+    if(games.length === 0) {
+      res.redirect('/not-results')
+    } else {
+      res.render ('allGames', {games})
+    }  
+  })
+  .catch(err => console.log(err))
+})
+
+
+router.get('/search-playtime', checkForAuth, (req, res, next) => {
+  
+  const min = req.query.min_playtime
+  const max = req.query.max_playtime
+  
+  Boardgame.find({$and: [{min_playtime: {$gte: min}}, {max_playtime: {$lte: max}}]})
+  .then(games => {
+    if(games.length === 0) {
+      res.redirect('/not-results')
+    } else {
+      res.render ('allGames', {games})
+    }  
+  })
+  .catch(err => console.log(err))
+})
+
+
+router.get('/search-parameters', checkForAuth, (req, res, next) => {
+ 
+  const {criteria, preference, value} = req.query
+
+  switch (criteria) {
+    case "year_published":
+      if(preference === "greater") {
+        Boardgame.find({year_published: {$gte: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      if(preference === "lower") {
+        Boardgame.find({year_published: {$lte: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      if(preference === "equal") {
+        Boardgame.find({year_published: {$eq: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      break;
+
+    case "complexity":
+      if(preference === "greater") {
+        Boardgame.find({complexity: {$gte: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      if(preference === "lower") {
+        Boardgame.find({complexity: {$lte: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      if(preference === "equal") {
+        Boardgame.find({complexity: {$eq: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      break;
+
+    case "rating":
+      if(preference === "greater") {
+        Boardgame.find({rating: {$gte: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      if(preference === "lower") {
+        Boardgame.find({rating: {$lte: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      if(preference === "equal") {
+        Boardgame.find({rating: {$eq: value}})
+        .then(games => {
+          if(games.length === 0) {
+            res.redirect('/not-results')
+          } else {
+            res.render ('allGames', {games})
+          }  
+        })
+        .catch(err => console.log(err))
+        return
+      }
+      break;
+  
+  }
+})
+
+
+// const min = req.query.min_playtime
+// const max = req.query.max_playtime
+
+// Boardgame.find({$and: [{min_playtime: {$gte: min}}, {max_playtime: {$lte: max}}]})
+// .then(games => {
+//   if(games.length === 0) {
+//     res.redirect('/not-results')
+//   } else {
+//     res.render ('allGames', {games})
+//   }  
+// })
+// .catch(err => console.log(err))
+
+
+router.get('/search-parameters', checkForAuth, (req, res, next) => {
+  
+})
+
+//_____________________________________________________________________
 
 
 module.exports = router;
@@ -129,6 +304,7 @@ module.exports = router;
 
 
 
+//find({$and: [{min_players: {$gte: min}}, {max_players: {$lte: max}}]})
 
 
 
@@ -147,11 +323,3 @@ module.exports = router;
 
 
 
-
-
-
-
-
-
-
-module.exports = router;
