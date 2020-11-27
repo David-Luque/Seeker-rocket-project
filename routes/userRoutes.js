@@ -54,9 +54,10 @@ router.get('/game-info/:id', checkForAuth, (req, res) => {
   const id = req.params.id
   Boardgame.findById(id)
   .then(game => {
+    console.log(game)
     res.render('gameInfo', game)
   })
-  .catch()
+  .catch(err=>{res.send(err)})
   
 });
 
