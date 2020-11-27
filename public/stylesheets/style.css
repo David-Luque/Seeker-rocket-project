@@ -47,7 +47,7 @@ a {
   width: 100%;
   height: 50%;
   padding: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   color: antiquewhite;
 }
 
@@ -60,6 +60,7 @@ a {
 header h1,
 header h3 {
   font-family: 'Orbitron', sans-serif;
+  color: ;
 }
 
 header h1 {
