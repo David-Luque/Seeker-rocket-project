@@ -1,4 +1,4 @@
-# Seeker Rocket | Web app project
+# [Seeker Rocket](https://web-app-boardgames-project.herokuapp.com/) | Web app project
 
 ## Introduction
 
@@ -19,4 +19,4 @@ This is my second project in ***Ironhack*** course (focused on **backend**), whi
 
 ## Final recap
 
-[This project](https://web-app-boardgames-project.herokuapp.com/) was a really challenging experience after such a short time learning *backend* (**less than 2 weeks**) but really satisfying as well.
+This project was a really challenging experience after such a short time learning *backend* (**less than 2 weeks**) but really satisfying as well.
