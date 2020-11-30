@@ -1,4 +1,6 @@
-# [Seeker Rocket](https://web-app-boardgames-project.herokuapp.com/) | Web app project
+# Seeker Rocket | Web app project
+
+link: https://web-app-boardgames-project.herokuapp.com/
 
 ## Introduction
 
