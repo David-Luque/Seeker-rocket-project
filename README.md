@@ -13,15 +13,15 @@ This web app works throught server-side rendering with Handlebars technology. Th
 
 ## Built With
 
-* [Node](https://nodejs.org/en/) <br>
-* [Express](https://www.npmjs.com/package/express) <br>
-* [Handlebars](https://handlebarsjs.com/) <br>
-* [mongoDB](https://www.mongodb.com/) <br>
-* [mongoose](https://mongoosejs.com/) <br>
-* [Passport](https://www.npmjs.com/package/passport) <br>
-* [Bootstrap](https://getbootstrap.com/) <br>
-* [GitHub](https://en.wikipedia.org/wiki/GitHub) <br>
-* [Heroku](https://www.heroku.com/) <br>
+* [Node](https://nodejs.org/en/)
+* [Express](https://www.npmjs.com/package/express)
+* [Handlebars](https://handlebarsjs.com/)
+* [mongoDB](https://www.mongodb.com/)
+* [mongoose](https://mongoosejs.com/)
+* [Passport](https://www.npmjs.com/package/passport)
+* [Bootstrap](https://getbootstrap.com/)
+* [GitHub](https://en.wikipedia.org/wiki/GitHub)
+* [Heroku](https://www.heroku.com/)
 
 
 ## Author
