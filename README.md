@@ -2,11 +2,11 @@
 
 Second project in ***Ironhack*** bootcamp, focused on **backend**, which consists of developing a complete server side rendering web app connected to a database.
 
-###Link
+### Link
 
 https://web-app-boardgames-project.herokuapp.com/
 
-##Details
+## Details
 
 This web app works throught server-side rendering with Handlebars technology. The main features are: posibility of sort and filter all games by different criteria, create and modify a personal collection, and whrite public comments for the community.
 
