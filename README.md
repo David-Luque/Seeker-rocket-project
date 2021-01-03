@@ -30,7 +30,7 @@ This web app works throught server-side rendering with Handlebars technology. Th
 
 ## Final recap
 
-This project was a really challenging experience after such a short time learning *backend* (** 2 weeks**) but really satisfying as well.
+This project was a really challenging experience after such a short time learning *backend* (**2 weeks**) but really satisfying as well.
 
 ## License
 
