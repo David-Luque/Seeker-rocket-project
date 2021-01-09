@@ -1,10 +1,5 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const router  = express.Router();
-const bcrypt  = require('bcrypt');
-const passport = require('passport');
-const ensureLogin = require('connect-ensure-login')
-
+const express   = require('express');
+const router    = express.Router();
 const Boardgame = require('../models/Boardgame')
 
 
@@ -17,16 +12,13 @@ const checkForAuth = (req, res, next) =>{
 }
 
 
-
 //Route to search by Name
 router.post('/search-by-name', checkForAuth, (req, res) => {
   const name = req.body.search
   
-  const firstLetter = name.charAt(0)
-  const firstUpperLetter = firstLetter.toUpperCase()
-  const restWord = name.slice(1, name.length)
-  const finalWord = firstUpperLetter.concat(restWord)
-  
+  const firstUpperLetter = name.charAt(0).toUpperCase()
+  const restOfWord = name.slice(1, name.length)
+  const finalWord = firstUpperLetter.concat(restOfWord)
 
   Boardgame.findOne({name: finalWord})
   .then(game => {
@@ -74,7 +66,7 @@ router.get('/sort-rank', checkForAuth, (req, res, next) => {
 
 router.get('/sort-complexity', checkForAuth, (req, res, next) => {
   
-  Boardgame.find({}).sort( {complexity: -1} )
+  Boardgame.find({}).sort( {complexity: 1} )
   .then(games => {
     res.render ('allGames', {games})
   })
@@ -254,7 +246,6 @@ router.get('/search-parameters', checkForAuth, (req, res, next) => {
         return
       }
       break;
-  
   }
 })
 
@@ -289,7 +280,6 @@ router.get('/search-mechanism', checkForAuth, (req, res, next) => {
 
   Boardgame.find({ mechanisms: { $all: filteredTags } } )
   .then(games => {
-    console.log(games)
     res.render('allGames', {games})
   })
   .catch(err => console.log(err))
@@ -331,7 +321,6 @@ router.get('/search-category', checkForAuth, (req, res, next) => {
 
   Boardgame.find({ category: { $all: filteredTags } } )
   .then(games => {
-    console.log(games)
     res.render('allGames', {games})
   })
   .catch(err => console.log(err))
@@ -342,8 +331,6 @@ router.get('/search-category', checkForAuth, (req, res, next) => {
 router.get('/not-results', checkForAuth, (req, res) => {
   res.render ('notResult')
 })
-
-
 
 
 module.exports = router;

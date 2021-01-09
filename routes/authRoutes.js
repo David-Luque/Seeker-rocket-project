@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const router  = express.Router();
 const bcrypt  = require('bcrypt');
 const passport = require('passport');
@@ -9,12 +8,10 @@ const User = require('../models/User')
 const Boardgame = require('../models/Boardgame')
 
 
-
 router.post('/signup', (req, res, next) => {
-  console.log(req.body)
   const {username, password} = req.body
 
-  if(username === '' || password === '') {
+  if(username === null || password === null) {
     res.render('welcomePage', {layout: false, invalidMessage: 'Insert valid username and password'})
     return 
   }
@@ -56,7 +53,5 @@ router.get('/logout', ensureLogin.ensureLoggedIn("/"), (req, res) => {
   req.logout()
   res.redirect('/')
 })
-
-
 
 module.exports = router

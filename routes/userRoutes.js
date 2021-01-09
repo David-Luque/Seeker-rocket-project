@@ -1,13 +1,7 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const router  = express.Router();
-const bcrypt  = require('bcrypt');
-const passport = require('passport');
-const ensureLogin = require('connect-ensure-login')
-
 const Boardgame = require('../models/Boardgame')
-const Prototipe = require('../models/Prototipe');
-
+const Prototipe = require('../models/Prototype');
 
 
 const checkForAuth = (req, res, next) =>{
@@ -30,8 +24,8 @@ router.get('/all-games', checkForAuth, (req, res) =>{
 
 //Routes to see USER COLLECTIONS
 router.get('/games-collection', checkForAuth, (req, res) =>{
-
-  Boardgame.find({users_favlist: {$in: [req.user._id]}})
+  const user = req.user
+  Boardgame.find({users_favlist: {$in: [user._id]}})
   .then(games => {
     res.render('boardgamesCollection', {games})
   })
@@ -54,7 +48,6 @@ router.get('/game-info/:id', checkForAuth, (req, res) => {
   const id = req.params.id
   Boardgame.findById(id)
   .then(game => {
-    console.log(game)
     res.render('gameInfo', game)
   })
   .catch(err=>{res.send(err)})
@@ -66,7 +59,6 @@ router.get('/proto-info/:id', checkForAuth, (req, res) => {
   const id = req.params.id
   Prototipe.findById(id)
   .then(game => {
-    //console.log(game)
     res.render('protoInfo', game)
   })
   .catch(err=>{res.send(err)}) 
@@ -96,7 +88,6 @@ router.post('/add-game/:id', checkForAuth, (req, res) =>{
 
 router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
   
-  console.log(req.params.id)
   const newComment = req.body.comments
   const id = req.params.id
   
@@ -111,7 +102,7 @@ router.post('/comment-game/:id', checkForAuth, (req, res, next)=>{
     .then((game) => {
       res.redirect(`/game-info/${game._id}`)
     })
-    .catch(error => console.log('nope'))
+    .catch(err=>{res.send(err)})
   }
 })
 
@@ -140,22 +131,19 @@ router.post('/add-note/:id', checkForAuth, (req, res, next)=> {
   .then(game => {
     const oldNotes = game.designer_notes;
     const newNotes = oldNotes.concat(noteToAdd)
-    console.log(newNotes)
     Prototipe.findByIdAndUpdate(id, {designer_notes: newNotes}, {new: true})
     .then(result => {
-      console.log(result) 
       res.redirect (`/proto-info/${game._id}`)
     })
     
   })
-  .catch(err => console.log(err))
+  .catch(err => {res.send(err)})
 })
 
 router.get('/edit-proto/:id', checkForAuth, (req, res) => {
   const id = req.params.id
   Prototipe.findById(id)
   .then(game => {
-    console.log(game)
     res.render('editPrototipe', game)
   })
   .catch(err=>{res.send(err)})
@@ -169,7 +157,6 @@ router.post('/edit-proto/:id', checkForAuth, (req, res) => {
   
   Prototipe.findByIdAndUpdate(id, {...editedProto, owner: user._id})
   .then(game => {
-    console.log(game)
     res.redirect(`/proto-info/${game._id}`)
   })
   .catch(err=>{res.send(err)})
@@ -185,20 +172,20 @@ router.get('/remove-game/:id', checkForAuth, (req, res, next)=>{
   .then((game) => {
     if(game.users_favlist.includes(user._id)) {
       const userIndex = game.users_favlist.indexOf(user._id)
-      const originalList = game.users_favlist
+      const usersList = game.users_favlist
       
-      originalList.splice(userIndex, 1)
+      usersList.splice(userIndex, 1)
       
-      Boardgame.findByIdAndUpdate(id, {users_favlist: originalList}, {new:true})
+      Boardgame.findByIdAndUpdate(id, {users_favlist: usersList}, {new:true})
       .then(() => {
         res.redirect('/games-collection')
       })
     } else {
-      Boardgame.findById(id)
-      .then(game => {
+      // Boardgame.findById(id)
+      // .then(game => {
       game.deleteMessage = "This game isn't in your collection ";
       res.render('gameInfo', game)
-    })
+    // })
     }
 
   })
@@ -211,34 +198,6 @@ router.get('/remove-prototipe/:id', checkForAuth, (req, res, next)=>{
   .then(() => res.redirect('/prototipes-collection'))
   .catch(error => res.send(error))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-// //ESTA FORMA DE ASEGURAR AL PROPIETARIO DEL QUOTE ES OBLIGATORIA EN RUTAS DE EDITAR Y ELIMINAR; OPCIONAL SI DEJAR VER O NO A LOS DEMAS LOS DETALLES
-// //SE PODRIA SACAR COMO MIDDLEWARE, SIMILAR A "checkForAuth", y ponerla fuera para luego llamarla, como los ROLES
-// router.get('/editPrototipe/:id', checkForAuth, (req, res) => {
-//   const id = req.params.id 
-//   Prototipes.findOne({_id: id})
-//   .then(data=>{
-//   // A continuacion comparamos el id del quote buscado antes con el del usuario activo (ambos pasados a strings porque son objetos (type: Schema.Types.ObjectId) de manera que si coinciden, porque es el mismo usuario que lo creó, podemos acceder a la view de editar el quote; si no, redirect al home u otro sitio)
-//     if(data.owner.toString() == req.user._id.toString()) { 
-//       res.render('editPrototipe')
-//     } else {
-//       res.redirect('/user-homepage')
-//     }
-//   })
-//   .catch(err=>{res.send(err)}) 
-// })
-
 
 
 module.exports = router;

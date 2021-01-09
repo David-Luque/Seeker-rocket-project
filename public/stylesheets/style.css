@@ -156,7 +156,6 @@ img {
 }
 
 .comments {
-
   width: 90%;
   padding: 0;
   margin: 1.5rem 0;
@@ -228,7 +227,6 @@ textarea {
   margin: 0 1rem;
 }
 
-
 .card-body,
 .list-group-flush li {
   background-color: rgba(0, 0, 0, 0);
@@ -237,7 +235,8 @@ textarea {
   font-weight: lighter;
 }
 
-.edit-view, .create-view{
+.edit-view,
+.create-view {
   display: flex;
   justify-content: center;
   align-items: start;

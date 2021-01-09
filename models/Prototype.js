@@ -14,9 +14,9 @@ const protoSchema = new Schema({
   category: {type: String},
   image: {type: String},
   designer_notes: {type: String},
-  owner: {type: Schema.Types.ObjectId}
+  owner: {type: Schema.Types.ObjectId, ref: 'User'}
 })
 
-const Prototipe = mongoose.model('Prototipe', protoSchema)
+const Prototype = mongoose.model('Prototype', protoSchema)
 
-module.exports = Prototipe
+module.exports = Prototype

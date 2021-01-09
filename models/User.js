@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 userSchema = new Schema({
   username: {type: String, required: true},
   password: {type: String, required: true},
-  prototipe_games: [{type: Schema.ObjectId, ref: 'Prototipes'}]
+  prototype_games: [{type: Schema.Types.ObjectId, ref: 'Prototypes'}]
 })
 
 const User = mongoose.model('User', userSchema)
