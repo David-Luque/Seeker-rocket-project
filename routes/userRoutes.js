@@ -27,7 +27,7 @@ router.get('/games-collection', checkForAuth, (req, res) =>{
   const user = req.user
   Boardgame.find({users_favlist: {$in: [user._id]}})
   .then(games => {
-    res.render('boardgamesCollection', {games})
+    res.render('userBoardgamesCollection', {games})
   })
   .catch(err=>res.send(err))
 })
@@ -36,7 +36,7 @@ router.get('/prototipes-collection', checkForAuth, (req, res) => {
   const user = req.user
   Prototipe.find({owner: user._id})
   .then(games => {
-    res.render('protosCollection', {games})
+    res.render('userProtosCollection', {games})
   })
   .catch(err=>{res.send(err)}) 
   

@@ -21,7 +21,7 @@ const User            = require('./models/User');
 
 
 mongoose
-.connect(`mongodb+srv://david-la-91:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
+.connect(`mongodb+srv://${process.env.MYUSER}:${process.env.PASSWORD}@cluster0.mi8ae.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
 .then(x => {
   console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
 })

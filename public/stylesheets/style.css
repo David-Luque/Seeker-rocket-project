@@ -94,10 +94,12 @@ div.alert {
   margin-top: 2rem;
 }
 
-
-.boardgame-card {
+div.boardgame-card,
+div.proto-card,
+div.collection-card {
   margin: 0.5rem 0;
-  padding: 0;
+  padding-top: 15px;
+  border-radius: 10%;
 }
 
 .col-sm {
